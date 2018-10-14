@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style>
+      html, body {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+      }
+
+      #button-start {
+        position: absolute;
+        top: 32px;
+        left: 32px;
+        z-index: 1;
+      }
+    </style>
+
+    <title>viz</title>
+  </head>
+  <body>
+    <button id='button-start'>Start</button>
+    <script>
+      const canvas = document.createElement('canvas');
+      canvas.style.position = 'fixed';
+      canvas.style.left = 0;
+      canvas.style.top = 0;
+      document.body.appendChild(canvas);
+
+      function render() {
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#f00';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        render();
+      }
+
+      animate();
+
+      function handleResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        render();
+      }
+
+      window.addEventListener('resize', () => handleResize());
+      handleResize();
+
+      const startButtonEl = document.getElementById('button-start');
+      startButtonEl.onclick = () => {
+        if(canvas.requestFullScreen) {
+          console.log('1');
+          canvas.requestFullScreen();
+        } else if (canvas.webkitRequestFullScreen) {
+          console.log('2');
+          canvas.webkitRequestFullScreen();
+        } else if (canvas.mozRequestFullScreen) {
+          console.log('3');
+          canvas.mozRequestFullScreen();
+        } else {
+          throw new Error('No fullscreen');
+        }
+
+        document.body.removeChild(startButtonEl);
+      };
+
+      const people = {};
+
+      function connect() {
+        const address = `ws://${window.location.hostname}:8081`;
+        connection = new WebSocket(address);
+
+        connection.onopen = () => console.log('Connection open');
+        connection.onmessage = ({ data }) => {
+          let message;
+
+          try {
+            message = JSON.parse(data);
+          } catch (e) {
+            console.error(e);
+          }
+
+          if (message === undefined) {
+            return;
+          }
+
+          switch (message.command) {
+            case 'create':
+              people[message.name] = { x: 0, y: 0 };
+              break;
+            case 'move':
+              const { x, y } = message;
+              people[message.name] = { x, y };
+              break;
+            default:
+              console.log('Unrecognized command:', message);
+          }
+        };
+      }
+
+      connect();
+    </script>
+  </body>
+</html>

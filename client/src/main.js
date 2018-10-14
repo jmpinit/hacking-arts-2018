@@ -84,3 +84,12 @@ function connect() {
 }
 
 connect();
+
+// Picture-taking
+
+const fileInput = document.getElementById('input-image');
+
+fileInput.addEventListener('change', event => fetch('/position-image', {
+  method: 'POST',
+  body: event.target.files[0],
+}));
