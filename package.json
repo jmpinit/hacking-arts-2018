@@ -1,0 +1,37 @@
+{
+  "name": "chorus",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "node node_modules/webpack/bin/webpack.js",
+    "watch": "node node_modules/webpack/bin/webpack.js --watch",
+    "server": "node_modules/nodemon/bin/nodemon.js server/build/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmptable/chorus.git"
+  },
+  "author": "Owen Trueblood",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmptable/chorus/issues"
+  },
+  "homepage": "https://github.com/jmptable/chorus#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "babel-loader": "^8.0.4",
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "nodemon": "^1.18.4",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "winston": "^2.4.0",
+    "ws": "^6.1.0"
+  }
+}
